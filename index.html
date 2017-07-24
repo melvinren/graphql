@@ -8,11 +8,15 @@
         <hr>
         <button id="btnWithQuery">带参数graphql</button>
         <textarea name="" id="txtWithQuery" cols="100" rows="10"></textarea>
+        <hr>
+        <button id="btnMutation">Mutation</button>
+        <textarea name="" id="txtMutation" cols="100" rows="10"></textarea>
     </body>
     <script>
         document.addEventListener('DOMContentLoaded', function(){
             var btn1 = document.getElementById('btnSimple');
-            var btn2 = document.getElementById('btnWithQuery');
+            var btn2 = document.getElementById('btnWithQuery');            
+            var btn3 = document.getElementById('btnMutation');
             btn1.addEventListener('click', function(){
                 var q = "{ hello }"
                 sendAjax(q, null, function(d){
@@ -26,6 +30,22 @@
                 var v = { dice: 3, sides: 6 }
                 sendAjax(q, v, function(d){
                     document.getElementById('txtWithQuery').value = JSON.stringify(d);
+                })
+            })
+            btn3.addEventListener('click', function(){
+                var q = `mutation CreateMessage($input: MessageInput){
+                    createMessage(input:$input){
+                        id
+                    }
+                }`
+                var v = {
+                    input:{
+                        author:'andy',
+                        content:'hope is good thing'
+                    }
+                }
+                sendAjax(q,v,function(d){
+                    document.getElementById('txtMutation').value = JSON.stringify(d)
                 })
             })
             function sendAjax(query, variables, callback){
